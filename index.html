@@ -2,38 +2,42 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Accueil - BeninMarket</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BeninMarket</title>
+  <!-- Lien vers ton fichier CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Bienvenue sur BeninMarket</h1>
-  <a href="login.html">Connexion / Inscription</a> | 
-  <a href="annonce.html">Publier une annonce</a>
-  <hr>
-  <div id="annonces"></div>
+  <header>
+    <h1>Bienvenue sur BeninMarket</h1>
+    <nav>
+      <a href="index.html">Accueil</a> |
+      <a href="login.html">Connexion</a> |
+      <a href="register.html">Inscription</a> |
+      <a href="annonce.html">Publiez vos annonces</a>
+    </nav>
+  </header>
 
-  <script type="module">
-    import { db } from "./firebase.js";
-    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <main>
+    <section>
+      <h2>La marketplace pour le Bénin et la diaspora</h2>
+      <p>Vendez, achetez ou proposez des services localement et à l'international.</p>
+    </section>
 
-    async function chargerAnnonces() {
-      const querySnapshot = await getDocs(collection(db, "annonces"));
-      let html = "";
-      querySnapshot.forEach(doc => {
-        const ann = doc.data();
-        html += `
-          <div>
-            <h3>${ann.titre} - ${ann.prix} FCFA</h3>
-            <img src="${ann.photoURL}" width="200">
-            <p>${ann.desc}</p>
-            <p><b>Catégorie:</b> ${ann.categorie}</p>
-            <a href="https://wa.me/229XXXXXXXX?text=Je suis intéressé par: ${ann.titre}">Contacter</a>
-          </div><hr>
-        `;
-      });
-      document.getElementById("annonces").innerHTML = html;
-    }
+    <section>
+      <h3>Petites annonces</h3>
+      <p>Immobilier, véhicules, électronique, emploi… publiez en quelques minutes.</p>
+    </section>
 
-    chargerAnnonces();
-  </script>
+    <section>
+      <h3>Services</h3>
+      <p>Artisans, freelances et professionnels, trouvez des clients ou proposez vos services.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 BeninMarket - Tous droits réservés</p>
+  </footer>
 </body>
+</html>
 </html>
