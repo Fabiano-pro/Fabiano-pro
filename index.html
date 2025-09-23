@@ -1,71 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BeninMarket — Marketplace local & international</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <title>Accueil - BeninMarket</title>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <h1>BeninMarket</h1>
-      <nav>
-        <a href="index.html">Accueil</a>
-        <a href="listings.html">Annonces</a>
-        <a href="about.html">À propos</a>
-      </nav>
-    </div>
-  </header>
+  <h1>Bienvenue sur BeninMarket</h1>
+  <a href="login.html">Connexion / Inscription</a> | 
+  <a href="annonce.html">Publier une annonce</a>
+  <hr>
+  <div id="annonces"></div>
 
-  <main class="container">
-    <section class="hero">
-      <h2>La marketplace pour le Bénin et la diaspora</h2>
-      <p>Vendez, achetez ou proposez des services — localement et à l'international.</p>
-      <a class="cta" href="listings.html">Voir les annonces</a>
-    </section>
+  <script type="module">
+    import { db } from "./firebase.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    <section class="features">
-      <article>
-        <h3>Petites annonces</h3>
-        <p>Immobilier, véhicules, électronique, emploi — publiez en quelques minutes.</p>
-      </article>
-      <article>
-        <h3>Services</h3>
-        <p>Artisans, freelances et professionnels — trouvez des clients ou proposez vos services.</p>
-      </article>
-      <article>
-        <h3>Moyens de paiement</h3>
-        <p>Support prévu pour Mobile Money (MOMO, Flooz), cartes et paiements internationaux.</p>
-      </article>
-    </section>
+    async function chargerAnnonces() {
+      const querySnapshot = await getDocs(collection(db, "annonces"));
+      let html = "";
+      querySnapshot.forEach(doc => {
+        const ann = doc.data();
+        html += `
+          <div>
+            <h3>${ann.titre} - ${ann.prix} FCFA</h3>
+            <img src="${ann.photoURL}" width="200">
+            <p>${ann.desc}</p>
+            <p><b>Catégorie:</b> ${ann.categorie}</p>
+            <a href="https://wa.me/229XXXXXXXX?text=Je suis intéressé par: ${ann.titre}">Contacter</a>
+          </div><hr>
+        `;
+      });
+      document.getElementById("annonces").innerHTML = html;
+    }
 
-    <section class="howto">
-      <h3>Commencer</h3>
-      <ol>
-        <li>Créer un compte (email ou WhatsApp).</li>
-        <li>Publier une annonce avec photos et prix.</li>
-        <li>Contacter l'acheteur via chat ou WhatsApp.</li>
-      </ol>
-    </section>
-
-    <section class="signup">
-      <h3>Tester la version bêta</h3>
-      <p>Pour l'instant ce site est un prototype statique. Pour lancer la vraie marketplace il faudra un backend et un système de paiement.</p>
-      <form id="signup-form">
-        <input type="email" placeholder="Votre email" required id="email">
-        <button type="submit">M'avertir au lancement</button>
-      </form>
-      <p id="msg" class="hidden"></p>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <small>© BeninMarket - Prototype • Fabien KPETCHEKOU</small>
-    </div>
-  </footer>
-
-  <script src="js/script.js"></script>
+    chargerAnnonces();
+  </script>
 </body>
 </html>

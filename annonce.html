@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Publier une annonce - BeninMarket</title>
+</head>
+<body>
+  <h2>Publier une annonce</h2>
+  <input type="text" id="titre" placeholder="Titre"><br>
+  <input type="number" id="prix" placeholder="Prix"><br>
+  <input type="text" id="categorie" placeholder="Catégorie"><br>
+  <textarea id="description" placeholder="Description"></textarea><br>
+  <input type="file" id="photo"><br>
+  <button onclick="posterAnnonce()">Publier</button>
+
+  <script type="module">
+    import { db, storage, auth } from "./firebase.js";
+    import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    window.posterAnnonce = async function() {
+      const titre = document.getElementById("titre").value;
+      const prix = document.getElementById("prix").value;
+      const categorie = document.getElementById("categorie").value;
+      const desc = document.getElementById("description").value;
+      const photoFile = document.getElementById("photo").files[0];
+
+      if (!photoFile) return alert("Ajoute une photo");
+
+      const photoRef = ref(storage, "annonces/" + photoFile.name);
+      await uploadBytes(photoRef, photoFile);
+      const photoURL = await getDownloadURL(photoRef);
+
+      await addDoc(collection(db, "annonces"), {
+        titre, prix, categorie, desc, photoURL, user: auth.currentUser?.email || "inconnu"
+      });
+
+      alert("Annonce publiée avec succès !");
+    }
+  </script>
+</body>
+</html>
