@@ -1,0 +1,62 @@
+/* Style global */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background: #f9f9f9;
+  color: #333;
+}
+
+/* Header */
+header {
+  background: #008080;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+header h1 { margin: 0; }
+
+nav {
+  margin-top: 0.5rem;
+}
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+nav a.btn {
+  background: white;
+  color: #008080;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+.btn-primary {
+  display: inline-block;
+  background: #008080;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #222;
+  color: #fff;
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  nav { display: flex; flex-direction: column; }
+  nav a { margin: 5px 0; }
+}

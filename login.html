@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - BeninMarket</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Connexion</h1>
+  </header>
+  <main>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Mot de passe" required>
+      <button type="submit">Se connecter</button>
+    </form>
+  </main>
+  <footer>
+    <p>© 2025 BeninMarket</p>
+  </footer>
+  <script type="module">
+    import { auth } from './firebase.js';
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert('Connexion réussie ✅');
+        window.location.href = "index.html";
+      } catch (error) {
+        alert("Erreur : " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
