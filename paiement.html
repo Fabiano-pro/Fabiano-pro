@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paiement - BeninMarket</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>Paiement (PayPal Sandbox)</h1></header>
+  <main class="container">
+    <p>Test de paiement avec PayPal (mode Sandbox). Remplace <code>YOUR_SANDBOX_CLIENT_ID</code> par ton client-id sandbox PayPal.</p>
+    <label>Montant (FCFA)</label>
+    <input id="amount" type="number" value="1000" min="100" />
+    <div id="paypal-button-container"></div>
+    <p id="payStatus"></p>
+  </main>
+  <footer>© 2025 BeninMarket</footer>
+
+  <!-- PayPal SDK (sandbox) - replace client-id with your sandbox client id -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_SANDBOX_CLIENT_ID&currency=USD"></script>
+  <script type="module">
+    // Convert FCFA to USD (simple fixed rate example; change as needed)
+    const RATE = 0.0016; // 1 FCFA = 0.0016 USD (example)
+    const amountInput = document.getElementById('amount');
+    const status = document.getElementById('payStatus');
+
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        const usd = (parseFloat(amountInput.value) * RATE).toFixed(2);
+        return actions.order.create({
+          purchase_units: [{ amount: { value: usd } }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          status.textContent = 'Paiement effectué : ' + details.status + ' — ' + details.payer.name.given_name;
+        });
+      },
+      onError: function(err) {
+        status.textContent = 'Erreur paiement : ' + err;
+      }
+    }).render('#paypal-button-container');
+  </script>
+</body>
+</html>
